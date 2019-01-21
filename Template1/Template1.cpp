@@ -52,28 +52,30 @@ void ObjectWithTexture(float tx, float ty, float tz, GLuint texture, GLUquadric 
 
 void Ball(int a, double radius) {
 	glPushMatrix();
-	glColor3f(0.9, 0.3, 0.2);
 	glutSolidSphere(radius, 20, 20);
 	glPopMatrix();
 }
 void Galactic(int a) {
 	glPushMatrix();
-	Ball(a, 13.92); // sun
-	glTranslatef(5.8, 0, 0);
+	double sunRadius = 13.92;
+	glColor3f(0.9, 0.7, 0.05);
+	Ball(a, sunRadius); // sun
+	glColor3f(0.18, 0.15, 0.8);
+	glTranslatef(sunRadius + 5.8, 0, 0);
 	Ball(a, 0.049); // Mercury
-	glTranslatef(10.8, 0, 0);
+	glTranslatef(sunRadius + 10.8, 0, 0);
 	Ball(a, 0.12); // Wenus
-	glTranslatef(14.9, 0, 0);
+	glTranslatef(sunRadius + 14.9, 0, 0);
 	Ball(a, 0.13); // Ziemia
-	glTranslatef(228, 0, 0);
+	glTranslatef(sunRadius + 228, 0, 0);
 	Ball(a, 0.07); // Mars
-	glTranslatef(778, 0, 0);
+	glTranslatef(sunRadius + 778, 0, 0);
 	Ball(a, 1.42); // Jowisz
-	glTranslatef(142.6, 0, 0);
+	glTranslatef(sunRadius + 142.6, 0, 0);
 	Ball(a, 1.20); // Saturn
-	glTranslatef(287.1, 0, 0);
+	glTranslatef(sunRadius + 287.1, 0, 0);
 	Ball(a, 0.51); // Uran
-	glTranslatef(449.8, 0, 0);
+	glTranslatef(sunRadius + 449.8, 0, 0);
 	Ball(a, 0.49); // 	Neptun
 	glPopMatrix();
 }
@@ -133,6 +135,9 @@ void glutKeyboardFunc(int key, int x, int y)
 		break;
 	case 103:
 		gluLookAt(0, 0, -20, 0, 0, 0, -1, 0, 0);
+		break;
+	case 114: 
+		glLoadIdentity();
 		break;
 	}
 
