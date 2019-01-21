@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <tchar.h>
 #include <math.h>
+#include "imageloader.h"
 
 
 

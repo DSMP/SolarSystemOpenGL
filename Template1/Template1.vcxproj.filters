@@ -27,12 +27,18 @@
     <ClInclude Include="Template1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="imageloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Template1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imageloader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -18,111 +18,69 @@ GLfloat period = (float)(sqrt(mass / k_coeff));
 bool growing = true;
 int maxDistance = 1;
 double b = 0.6;
-GLdouble radius = 2.0;
 double z_position = 0;
+GLuint _textureId, _textureId2;
 
-void hexagon(int a) {
-	glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
-	  // Top face (y = 1.0f)
-	  // Define vertices in counter-clockwise (CCW) order with normal pointing out
-	glColor3f(0.0f, 1.0f, 0.0f);     // Green
-	glVertex3f(1.0f, 1.0f, -1.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-
-	// Bottom face (y = -1.0f)
-	glColor3f(1.0f, 0.5f, 0.0f);     // Orange
-	glVertex3f(1.0f, -1.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);
-
-	// Front face  (z = 1.0f)
-	glColor3f(1.0f, 0.0f, 0.0f);     // Red
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-
-	// Back face (z = -1.0f)
-	glColor3f(1.0f, 1.0f, 0.0f);     // Yellow
-	glVertex3f(1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);
-
-	// Left face (x = -1.0f)
-	glColor3f(0.0f, 0.0f, 1.0f);     // Blue
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-
-	// Right face (x = 1.0f)
-	glColor3f(1.0f, 0.0f, 1.0f);     // Magenta
-	glVertex3f(1.0f, 1.0f, -1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);
-	glEnd();  // End of drawing color-cube
+GLuint loadTexture(Image* image) {
+	GLuint textureId;
+	glGenTextures(1, &textureId); //Make room for our texture
+	glBindTexture(GL_TEXTURE_2D, textureId); //Tell OpenGL which texture to edit
+										 //Map the image to the texture
+	glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D
+		0,                            //0 for now
+		GL_RGB,                       //Format OpenGL uses for image
+		image->width, image->height,  //Width and height
+		0,                            //The border of the image
+		GL_RGB, //GL_RGB, because pixels are stored in RGB format
+		GL_UNSIGNED_BYTE, //GL_UNSIGNED_BYTE, because pixels are stored
+						  //as unsigned numbers
+		image->pixels);               //The actual pixel data
+	return textureId; //Returns the id of the texture
 }
 
-void TopHandle()
+void ObjectWithTexture(float tx, float ty, float tz, GLuint texture, GLUquadric *quadric, float radius, int rows, int columns)
 {
-	glPushMatrix();
-	glColor3f(0.9, 0.7, 0.6);
-	gluCylinder(gluNewQuadric(),1, 1,6,20,20);
-	glPopMatrix();
-}
-void Spring(int a) {
-	glPushMatrix();
-	//draw top Handle
-	TopHandle();
-	//draw spring
-	glTranslatef(-3, 0, 5);
-	glPointSize(2.0f);
-	glColor3f(0.3, 0.3, 0.3);
-	glBegin(GL_POINTS);
-	for (double t = 0; t < 8*M_PI; t+=0.2)
-	{
-		for (double u = 0; u < 2*M_PI; u+=0.5)
-		{
-			double x = cos(t)*(3+cos(u));
-			double y = sin(t)*(3 + cos(u));
-			double z = b*t + sin(u);
-			z_position = z;
-			glVertex3f(x, y, z);
-		}
-	}
-	glEnd();
-	//Draw bottom Handle
-
-	glPopMatrix();
-}
-void BottomHandle(int a)
-{
-	glPushMatrix();
-	glColor3f(0.1, 0.2, 0.1);
-	glTranslatef(0, 0, z_position + 4);
-	gluCylinder(gluNewQuadric(), 1, 1, 6, 20, 20);
-	glPopMatrix();
+	glTranslatef(tx, ty, tz);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	gluQuadricTexture(quadric, 1);
+	gluSphere(quadric, radius, rows, columns);
+	glTranslatef(-tx, -ty, -tz);
 }
 
-void Ball(int a) {
+
+void Ball(int a, double radius) {
 	glPushMatrix();
-	glTranslatef(0, 0, z_position+5+5);
 	glColor3f(0.9, 0.3, 0.2);
 	glutSolidSphere(radius, 20, 20);
+	glPopMatrix();
+}
+void Galactic(int a) {
+	glPushMatrix();
+	Ball(a, 13.92); // sun
+	glTranslatef(5.7, 0, 0);
+	Ball(a, 0.049); // Mercury
+	glTranslatef(10.8, 0, 0);
+	Ball(a, 0.12); // Wenus
+	glTranslatef(14.9, 0, 0);
+	Ball(a, 0.13); // Ziemia
+	glTranslatef(228, 0, 0);
+	Ball(a, 0.07); // Mars
+	glTranslatef(778, 0, 0);
+	Ball(a, 1.42); // Jowisz
+	glTranslatef(142.6, 0, 0);
+	Ball(a, 1.20); // Saturn
+	glTranslatef(287.1, 0, 0);
+	Ball(a, 0.51); // Uran
+	glTranslatef(449.8, 0, 0);
+	Ball(a, 0.49); // 	Neptun
 	glPopMatrix();
 }
 void MyDisplay(void) {
 	// The new scene
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	hexagon(1);
-	Spring(0.6);
-	Ball(1);
-	BottomHandle(1);
+	Galactic(1);
 
 	// The end of scene
 	glFlush();//start processing buffered OpenGL routines
@@ -137,7 +95,7 @@ void MyInit(void) {
 	gluPerspective(70.0, 1.777777777777778, 1, 100);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();//=1
-	gluLookAt(0, 0, -30, 10, 0, 0, -1, 0, 0);
+	gluLookAt(0, 0, -50, 10, 0, 0, -1, 0, 0);
 }
 void OnMotion(int x, int y)
 {
@@ -167,10 +125,7 @@ void OnMotion(int x, int y)
 }
 void render(int a)
 {
-	hexagon(a);
-	Spring(a);
-	Ball(a);
-	BottomHandle(a);
+	Galactic(a);
 	glutPostRedisplay();
 	Growing();
 	glutTimerFunc(25, render, a);
