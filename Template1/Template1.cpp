@@ -123,6 +123,20 @@ void OnMotion(int x, int y)
 	previous_x = x;
 	previous_y = y;
 }
+void glutKeyboardFunc(int key, int x, int y)
+{
+	switch (key)
+	{
+	case 27:      break;
+	case 101:
+		gluLookAt(0, 0, +20, 0, 0, 0, -1, 0, 0); 
+		break;
+	case 103:
+		gluLookAt(0, 0, -20, 0, 0, 0, -1, 0, 0);
+		break;
+	}
+
+}
 void render(int a)
 {
 	Galactic(a);
@@ -159,6 +173,7 @@ int main(int argc, char** argv) { //<- for normal API
 	MyInit();
 	glutDisplayFunc(MyDisplay);//
 	glutMotionFunc(OnMotion);
+	glutSpecialFunc(glutKeyboardFunc);
 	glutTimerFunc(100, render, 0.6);
 	glutMainLoop();//enter main loop and process events
 	return 0;
