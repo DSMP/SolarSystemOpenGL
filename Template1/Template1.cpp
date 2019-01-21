@@ -59,7 +59,7 @@ void Ball(int a, double radius) {
 void Galactic(int a) {
 	glPushMatrix();
 	Ball(a, 13.92); // sun
-	glTranslatef(5.7, 0, 0);
+	glTranslatef(5.8, 0, 0);
 	Ball(a, 0.049); // Mercury
 	glTranslatef(10.8, 0, 0);
 	Ball(a, 0.12); // Wenus
@@ -92,10 +92,10 @@ void MyInit(void) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();//=1
 	
-	gluPerspective(70.0, 1.777777777777778, 1, 100);
+	gluPerspective(70.0, 1.777777777777778, 1, 1000);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();//=1
-	gluLookAt(0, 0, -50, 10, 0, 0, -1, 0, 0);
+	gluLookAt(0, 0, -50, 0, 0, 0, -1, 0, 0);
 }
 void OnMotion(int x, int y)
 {
