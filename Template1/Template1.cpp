@@ -84,8 +84,9 @@ void MyDisplay(void) {
 	glLoadIdentity();
 	gluLookAt(eyex, eyey, zoom, 0, 0, 0, 0, 1, 0);
 	render(1);
-	// The end of scene
+	// The end of scene soil
 	glFlush();//start processing buffered OpenGL routines
+	glutTimerFunc(25, render, 1);
 }
 void MyInit(void) {
 	glClearColor(0.0, 0.0, 0.0, 0.0);//select clearing (background) color
@@ -154,8 +155,6 @@ void render(int a)
 	spaceRotation += 0.01;
 	Galactic(spaceRotation);
 	glutPostRedisplay();
-	Growing();
-	glutTimerFunc(25, render, a);
 }
 void Growing()
 {
