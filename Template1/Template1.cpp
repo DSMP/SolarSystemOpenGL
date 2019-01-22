@@ -83,7 +83,7 @@ void MyDisplay(void) {
 	// The new scene
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	Galactic(1);
-
+	glLoadIdentity();
 	// The end of scene
 	glFlush();//start processing buffered OpenGL routines
 }
@@ -129,7 +129,7 @@ void glutKeyboardFunc(int key, int x, int y)
 {
 	switch (key)
 	{
-	case 27:      break;
+	case 27: break;
 	case 101:
 		gluLookAt(0, 0, +20, 0, 0, 0, -1, 0, 0); 
 		break;
