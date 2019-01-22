@@ -16,8 +16,8 @@ GLint previous_x = 0;
 GLint previous_y = 0;
 GLfloat period = (float)(sqrt(mass / k_coeff));
 bool growing = true;
-int maxDistance = 1;
-double b = 0.6;
+int maxDistance = 1, zoom = -50;
+double b = 0.6, eyex = 0.0, eyey = 0.0, centerx = 0.0, centery = 0.0;
 double z_position = 0;
 GLuint _textureId, _textureId2;
 
@@ -60,7 +60,7 @@ void Galactic(int a) {
 	double sunRadius = 13.92;
 	glColor3f(0.9, 0.7, 0.05);
 	Ball(a, sunRadius); // sun
-	glColor3f(0.18, 0.15, 0.8);
+	glColor3f(1, 1, 1);
 	glTranslatef(sunRadius + 5.8, 0, 0);
 	Ball(a, 0.049); // Mercury
 	glTranslatef(sunRadius + 10.8, 0, 0);
@@ -84,6 +84,7 @@ void MyDisplay(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	Galactic(1);
 	glLoadIdentity();
+	gluLookAt(eyex, eyey, zoom, 0, 0, centerx, 0, 1, 0);
 	// The end of scene
 	glFlush();//start processing buffered OpenGL routines
 }
@@ -97,7 +98,7 @@ void MyInit(void) {
 	gluPerspective(70.0, 1.777777777777778, 1, 1000);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();//=1
-	gluLookAt(0, 0, -50, 0, 0, 0, -1, 0, 0);
+	zoom = -50;
 }
 void OnMotion(int x, int y)
 {
@@ -105,22 +106,26 @@ void OnMotion(int x, int y)
 	if (previous_x < x)
 	{
 		printf("previous_x < x");
-		gluLookAt(/*eye*/-0.001, 0, 0,/*look at*/0, 0, -0.05,/*up*/0, 1, 0);
+		eyex -= -0.001;
+		centerx -= -0.05;
 	}
 	if (previous_x > x)
 	{
+		eyex -= 0.001;
+		centerx -= -0.05;
 		printf("previous_x > x");
-		gluLookAt(/*eye*/0.001, 0, 0,/*look at*/0, 0, -0.05,/*up*/0, 1, 0);
 	}
 	if (previous_y < y)
 	{
+		eyey -= 0.001;
+		centerx -= -0.05;
 		printf("previous_y < y");
-		gluLookAt(/*eye*/0, 0.001, 0,/*look at*/0, 0, -0.05,/*up*/0, 1, 0);
 	}
 	if (previous_y > y)
 	{
+		eyey -= -0.001;
+		centerx -= -0.05;
 		printf("previous_y > y");
-		gluLookAt(/*eye*/-0, -0.001, 0,/*look at*/0, 0, -0.05,/*up*/0, 1, 0);
 	}
 	previous_x = x;
 	previous_y = y;
@@ -131,13 +136,16 @@ void glutKeyboardFunc(int key, int x, int y)
 	{
 	case 27: break;
 	case 101:
-		gluLookAt(0, 0, +20, 0, 0, 0, -1, 0, 0); 
+		zoom += 20; 
 		break;
 	case 103:
-		gluLookAt(0, 0, -20, 0, 0, 0, -1, 0, 0);
+		zoom -= 20;
 		break;
-	case 114: 
-		glLoadIdentity();
+	case 114: // r
+		zoom = -50;
+		eyex = 0.0;
+		eyey = 0.0;
+		centerx = 0.0;
 		break;
 	}
 
