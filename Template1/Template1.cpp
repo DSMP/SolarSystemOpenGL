@@ -106,25 +106,25 @@ void OnMotion(int x, int y)
 	if (previous_x < x)
 	{
 		printf("previous_x < x");
-		eyex -= -0.001;
-		centerx -= -0.05;
+		eyex += 0.1*10;
+		//centerx -= -0.05;
 	}
 	if (previous_x > x)
 	{
-		eyex -= 0.001;
-		centerx -= -0.05;
+		eyex += -0.1*10;
+		//centerx -= -0.05;
 		printf("previous_x > x");
 	}
 	if (previous_y < y)
 	{
-		eyey -= 0.001;
-		centerx -= -0.05;
+		eyey += -0.1*10;
+		//centerx -= -0.05;
 		printf("previous_y < y");
 	}
 	if (previous_y > y)
 	{
-		eyey -= -0.001;
-		centerx -= -0.05;
+		eyey += +0.1*10;
+		//centerx -= -0.05;
 		printf("previous_y > y");
 	}
 	previous_x = x;
