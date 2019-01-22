@@ -84,7 +84,7 @@ void MyDisplay(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	Galactic(1);
 	glLoadIdentity();
-	gluLookAt(eyex, eyey, zoom, 0, 0, centerx, 0, 1, 0);
+	gluLookAt(eyex, eyey, zoom, 0, 0, 0, 0, 1, 0);
 	// The end of scene
 	glFlush();//start processing buffered OpenGL routines
 }
@@ -117,7 +117,7 @@ void OnMotion(int x, int y)
 	}
 	if (previous_y < y)
 	{
-		eyey += -0.1*10;
+		eyey -= 0.1*10;
 		//centerx -= -0.05;
 		printf("previous_y < y");
 	}
