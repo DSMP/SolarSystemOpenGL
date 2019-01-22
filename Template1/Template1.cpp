@@ -57,6 +57,7 @@ void Galactic(int a) {
 	glPushMatrix();
 	double sunRadius = 13.92/2;
 	glColor3f(0.9, 0.7, 0.05);
+	glRotatef(spaceRotation, 0, 1, 0);
 	Ball(a, sunRadius*2); // sun
 	glColor3f(1, 1, 1);
 	glTranslatef(sunRadius + 5.8, 0, 0);
@@ -80,9 +81,9 @@ void Galactic(int a) {
 void MyDisplay(void) {
 	// The new scene
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	Galactic(1);
 	glLoadIdentity();
 	gluLookAt(eyex, eyey, zoom, 0, 0, 0, 0, 1, 0);
+	render(1);
 	// The end of scene
 	glFlush();//start processing buffered OpenGL routines
 }
@@ -93,7 +94,7 @@ void MyInit(void) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();//=1
 	
-	gluPerspective(70.0, 1.777777777777778, 1, 1000);
+	gluPerspective(70.0, 1.777777777777778, 1, 700);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();//=1
 	zoom = -50;
@@ -150,7 +151,8 @@ void glutKeyboardFunc(int key, int x, int y)
 }
 void render(int a)
 {
-	Galactic(a);
+	spaceRotation += 0.01;
+	Galactic(spaceRotation);
 	glutPostRedisplay();
 	Growing();
 	glutTimerFunc(25, render, a);
@@ -185,7 +187,6 @@ int main(int argc, char** argv) { //<- for normal API
 	glutDisplayFunc(MyDisplay);//
 	glutMotionFunc(OnMotion);
 	glutSpecialFunc(glutKeyboardFunc);
-	glutTimerFunc(100, render, 0.6);
 	glutMainLoop();//enter main loop and process events
 	return 0;
 }
