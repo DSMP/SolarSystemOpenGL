@@ -10,16 +10,14 @@
 
 
 GLfloat M_PI = 3.14f;
-GLint mass = 10;
-GLfloat k_coeff = 1000;
 GLint previous_x = 0;
 GLint previous_y = 0;
-GLfloat period = (float)(sqrt(mass / k_coeff));
 bool growing = true;
 int maxDistance = 1, zoom = -50;
 double b = 0.6, eyex = 0.0, eyey = 0.0, centerx = 0.0, centery = 0.0;
 double z_position = 0;
 GLuint _textureId, _textureId2;
+double spaceRotation = 0;
 
 GLuint loadTexture(Image* image) {
 	GLuint textureId;
@@ -57,9 +55,9 @@ void Ball(int a, double radius) {
 }
 void Galactic(int a) {
 	glPushMatrix();
-	double sunRadius = 13.92;
+	double sunRadius = 13.92/2;
 	glColor3f(0.9, 0.7, 0.05);
-	Ball(a, sunRadius); // sun
+	Ball(a, sunRadius*2); // sun
 	glColor3f(1, 1, 1);
 	glTranslatef(sunRadius + 5.8, 0, 0);
 	Ball(a, 0.049); // Mercury
