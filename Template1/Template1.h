@@ -8,4 +8,6 @@ void Growing();
 
 void Ball(int a, double radius);
 
+void Ball(int a, double radius, int planetId);
+
 void Galactic(int a);
