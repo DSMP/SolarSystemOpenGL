@@ -16,8 +16,9 @@ bool growing = true;
 int maxDistance = 1, zoom = -50;
 double b = 0.6, eyex = 0.0, eyey = 0.0, centerx = 0.0, centery = 0.0;
 double z_position = 0;
-GLuint _textureId, _textureId2;
-double spaceRotation = 0, planetScaling = 10, PlanetRotationScale = 0.001, PlanetMovementScale = 0.0001;
+GLuint _textureId, sun, Mercury, Wenus, Earth, Mars, Jupiter, Saturn, Uranus, Neptun;
+GLuint* textures = new GLuint[9]{ 0,0,0,0,0,0,0,0,0 };
+double spaceRotation = 0, planetScaling = 10, PlanetRotationScale = 0.001, PlanetMovementScale = 0.01;
 double* planetsAroundSun = new double[9] {87.969, 224.701, 365.256, 686.960, 4333.287,10756.2,30707.490,60223.353,2.5};
 double* planetsRotate = new double[9]{ 58, 243, 23.9333, 24.34, 9.93, 10.39, 17.10, 16, 25.9 };
 double* MovementSpeed = new double[9]{0,0,0,0,0,0,0,0,0};
@@ -54,14 +55,14 @@ void ObjectWithTexture(float tx, float ty, float tz, GLuint texture, GLUquadric 
 
 
 void Ball(int a, double radius, int planetId) {
-	MovementSpeed[planetId] += planetsAroundSun[planetId] * PlanetMovementScale;
+	MovementSpeed[planetId] += 1/planetsAroundSun[planetId] * PlanetMovementScale;
 	glRotatef(MovementSpeed[planetId], 0, 0, 0);
 	glPushMatrix();
 	RotationSpeed[planetId] += planetsRotate[planetId] * PlanetRotationScale;
 	glRotatef(RotationSpeed[planetId], 0, 1, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glBindTexture(GL_TEXTURE_2D, _textureId);
+	glBindTexture(GL_TEXTURE_2D, textures[planetId]);
 	gluQuadricTexture(quadric, 1);
 	gluSphere(quadric, radius, 20, 20);
 	glPopMatrix();
@@ -113,10 +114,47 @@ void MyInit(void) {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();//=1
 	zoom = -50;
-
-	Image* image = loadBMP("steel24.bmp");
+	Image* image;
+	image = loadBMP("steel24.bmp");
 	_textureId = loadTexture(image);
 	delete image;
+	image = loadBMP("sun24.bmp");
+	sun = loadTexture(image);
+	textures[8] = sun;
+	delete image;
+	image = loadBMP("Mercury24.bmp");
+	Mercury = loadTexture(image);
+	textures[0] = Mercury;
+	delete image;
+	image = loadBMP("Venus24.bmp");
+	Wenus = loadTexture(image);
+	textures[1] = Wenus;
+	delete image;
+	image = loadBMP("Earth24.bmp");
+	Earth = loadTexture(image);
+	textures[2] = Earth;
+	delete image;
+	image = loadBMP("Mars24.bmp");
+	Mars = loadTexture(image);
+	textures[3] = Mars;
+	delete image;
+	image = loadBMP("Jupiter24.bmp");
+	Jupiter = loadTexture(image);
+	textures[4] = Jupiter;
+	delete image;
+	image = loadBMP("Saturn24.bmp");
+	Saturn = loadTexture(image);
+	textures[5] = Saturn;
+	delete image;
+	image = loadBMP("Uranus24.bmp");
+	Uranus = loadTexture(image);
+	textures[6] = Uranus;
+	delete image;
+	image = loadBMP("Neptune24.bmp");
+	Neptun = loadTexture(image);
+	delete image;
+	textures[7] = Neptun = loadTexture(image);
+	;
 
 	quadric = gluNewQuadric();
 }
