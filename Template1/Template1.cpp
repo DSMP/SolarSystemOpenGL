@@ -55,8 +55,8 @@ void ObjectWithTexture(float tx, float ty, float tz, GLuint texture, GLUquadric 
 
 
 void Ball(int a, double radius, int planetId) {
-	MovementSpeed[planetId] += 1/planetsAroundSun[planetId] * PlanetMovementScale;
-	glRotatef(MovementSpeed[planetId], 0, 0, 0);
+	MovementSpeed[planetId] += 1 / planetsAroundSun[planetId] * PlanetMovementScale;
+	glRotatef(MovementSpeed[planetId], 0, 1, 0);
 	glPushMatrix();
 	RotationSpeed[planetId] += planetsRotate[planetId] * PlanetRotationScale;
 	glRotatef(RotationSpeed[planetId], 0, 1, 0);
@@ -110,7 +110,7 @@ void MyInit(void) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();//=1
 	
-	gluPerspective(70.0, 1.777777777777778, 1, 700);
+	gluPerspective(70.0, 1.777777777777778, 1, 1000);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();//=1
 	zoom = -50;
